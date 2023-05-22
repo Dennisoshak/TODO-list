@@ -27,6 +27,13 @@ a {
   background-color: #f0f0f0;
   margin-bottom: 0.5rem;
   border-radius: 5px;
+  transition: 0.15s ease-in-out;
+
+}
+
+.todo-item:hover {
+    transform: scale(1.05);
+
 }
 
 .todo-item.done {
