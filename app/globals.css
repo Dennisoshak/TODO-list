@@ -23,7 +23,7 @@ a {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 0.5rem;
+  padding: 0.5rem 1rem;
   background-color: #f0f0f0;
   margin-bottom: 0.5rem;
   border-radius: 5px;
@@ -32,6 +32,14 @@ a {
 .todo-item.done {
   text-decoration: line-through;
   opacity: 0.6;
+}
+
+.edit-form {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    height: 40px;
+    align-items: center;
 }
 
 button {
@@ -43,4 +51,7 @@ button {
 button.delete {
   color: red;
   margin-left: 1rem;
+}
+button.done {
+    margin-left: 20%;
 }
