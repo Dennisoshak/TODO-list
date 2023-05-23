@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState,useRef  } from "react";
 import { TextField,Button } from "@mui/material";
 import '../globals.css'
 
@@ -6,6 +6,30 @@ import '../globals.css'
 const TodoList = ({todos, setTodos}) => {
   const [onEdit, setOnEdit] = useState(0);
   const [edited, setEdited] = useState("");
+
+  const dragItem = useRef();
+  const dragOverItem = useRef();
+
+  const dragStart = (e, position) => {
+    dragItem.current = position;
+    console.log(e.target);
+  };
+
+  const dragEnter = (e, position) => {
+    dragOverItem.current = position;
+    console.log(e.target.innerHTML);
+  };
+
+  const dropItem = (e) => {
+    const copyListItems = [...todos];
+    const dragItemContent = copyListItems[dragItem.current];
+    copyListItems.splice(dragItem.current, 1);
+    copyListItems.splice(dragOverItem.current, 0, dragItemContent);
+    dragItem.current = null;
+    dragOverItem.current = null;
+    setTodos(copyListItems);
+  };
+  
   const deleteTodo = (id) => {
     setTodos(todos.filter((todo) => todo.id !== id));
   };
@@ -24,10 +48,18 @@ const TodoList = ({todos, setTodos}) => {
     setOnEdit(0);
   };
 
+
+
   return (
     <ul>
       {todos.map((todo, i) => (
         <li
+        onDragStart={(e) => dragStart(e, i)}
+        
+        onDragEnter={(e) => dragEnter(e, i)}
+        onDragEnd={(e)=>dropItem(e)}
+        
+
           key={todo.id}
           draggable
           className={`todo-item ${todo.done ? "done" : ""}`}
@@ -51,13 +83,13 @@ const TodoList = ({todos, setTodos}) => {
                   padding: "0",
                 }}
               />
-              <button type="submit" className="done">
+              <button disabled={!edited} type="submit" className="done">
                 Done
               </button>
             </form>
           ) : (
             <div className="edit-form">
-              <span onClick={() => markTodo(todo.id)}>{todo.text}</span>
+              <span className="todo-text"onClick={() => markTodo(todo.id)}>{todo.text}</span>
               <div>
                 <button
                   className="edit"

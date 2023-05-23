@@ -36,9 +36,14 @@ a {
 
 }
 
+.todo-text {
+    cursor: pointer;
+}
+
 .todo-item.done {
   text-decoration: line-through;
   opacity: 0.6;
+  background-color: aliceblue;
 }
 
 .edit-form {

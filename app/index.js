@@ -1,6 +1,7 @@
 'use client'
 import { useState } from "react";
-import { TextField,Button } from "@mui/material";
+import { TextField,Button, ThemeProvider } from "@mui/material";
+import { createTheme } from '@mui/material/styles'
 import './globals.css'
 import TodoList from "./components/TodoList";
 
@@ -16,11 +17,13 @@ const addTodo = (e) => {
 };
 
 return (
+  <ThemeProvider theme={theme}>
   <div className="container">
     <h1>Todo App</h1>
     <form onSubmit={addTodo}>
       <TextField
       fullWidth
+      color='neutral'
       id="fullwidth"
         type="text"
         value={input}
@@ -29,15 +32,32 @@ return (
       />
       <Button 
       sx={{margin:"10px"}}
-      variant="outlined" type="submit">Add Todo</Button>
+      variant="outlined"color='neutral' type="submit">Add Todo</Button>
     </form>
   <TodoList todos={todos} setTodos={setTodos}/>
   </div>
+ </ThemeProvider>
 );
 
 
 
 
 }
+
+const theme = createTheme({
+  status: {
+    danger: '#e53e3e',
+  },
+  palette: {
+    primary: {
+      main: '#0971f1',
+      darker: '#053e85',
+    },
+    neutral: {
+      main: '#64748B',
+      contrastText: '#fff',
+    },
+  },
+});
 
 export default TodoApp;
