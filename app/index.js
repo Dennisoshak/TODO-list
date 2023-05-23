@@ -1,9 +1,10 @@
 'use client'
 import { useState } from "react";
-import { TextField,Button, ThemeProvider } from "@mui/material";
+import { TextField,Button, ThemeProvider, CardHeader } from "@mui/material";
 import { createTheme } from '@mui/material/styles'
 import './globals.css'
 import TodoList from "./components/TodoList";
+import { useEffect } from "react";
 
 const TodoApp = () => {
   const [todos, setTodos] = useState([]);
@@ -16,10 +17,27 @@ const addTodo = (e) => {
   setInput("");
 };
 
+const saveChanges = () => {
+  localStorage.setItem('todos', JSON.stringify(todos));
+}
+const deleteChanges = () => {
+  localStorage.removeItem('todos');
+}
+
+useEffect(()=>{
+  const list = JSON.parse(localStorage.getItem('todos'));
+ list && setTodos(list)
+},[])
+
 return (
   <ThemeProvider theme={theme}>
   <div className="container">
-    <h1>Todo App</h1>
+    <header>
+    <h1>Todo App</h1> <div className="header-buttons">
+      <Button variant="outlined"color='neutral' sx={{margin:"10px"}} onClick={saveChanges}>Save</Button>
+      <Button variant="outlined"color='neutral' sx={{margin:"10px"}} onClick={deleteChanges}>Delete</Button>
+    </div>
+    </header>
     <form onSubmit={addTodo}>
       <TextField
       fullWidth
@@ -31,7 +49,7 @@ return (
         placeholder="Add a new todo"
       />
       <Button 
-      sx={{margin:"10px"}}
+      sx={{margin:"10px"}} disabled={!input}
       variant="outlined"color='neutral' type="submit">Add Todo</Button>
     </form>
   <TodoList todos={todos} setTodos={setTodos}/>

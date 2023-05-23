@@ -19,6 +19,14 @@ a {
   margin: 2rem auto;
 }
 
+header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+
+
 .todo-item {
   display: flex;
   justify-content: space-between;

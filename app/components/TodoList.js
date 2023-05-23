@@ -46,9 +46,10 @@ const TodoList = ({todos, setTodos}) => {
     temp[i].text = edited;
     setTodos(temp);
     setOnEdit(0);
+    setEdited("")
   };
 
-
+console.log(edited)
 
   return (
     <ul>
