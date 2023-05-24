@@ -1,7 +1,5 @@
 import { useState,useRef  } from "react";
 import { TextField,Button } from "@mui/material";
-import '../globals.css'
-
 
 const TodoList = ({todos, setTodos}) => {
   const [onEdit, setOnEdit] = useState(0);

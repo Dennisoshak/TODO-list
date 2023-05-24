@@ -2,16 +2,16 @@
 import { useState } from "react";
 import { TextField, Button, ThemeProvider, Snackbar } from "@mui/material";
 import { createTheme } from "@mui/material/styles";
-import "./globals.css";
+import { useSession, signIn, signOut } from 'next-auth/react';
 import TodoList from "./components/TodoList";
+import SignIn from "./components/signin";
 import { useEffect } from "react";
 
 const TodoApp = () => {
   const [todos, setTodos] = useState([]);
   const [input, setInput] = useState("");
-  const [snack, setSnack] = useState("");
   const [message, setMessage] = useState('')
-
+  const { data, status } = useSession();
   const addTodo = (e) => {
     e.preventDefault();
     if (!input) return;
@@ -25,7 +25,6 @@ const TodoApp = () => {
     if (todos && JSON.stringify(list) !== JSON.stringify(todos)) {
       console.log(list, todos);
       localStorage.setItem("todos", JSON.stringify(todos));
-      setSnack("saved");
       setMessage("Changes have been saved")
     } else setMessage("No changes to save")
   };
@@ -33,7 +32,6 @@ const TodoApp = () => {
     const list = JSON.parse(localStorage.getItem("todos"));
     if (list) {
       localStorage.removeItem("todos");
-      setSnack("deleted");
       setMessage("Changes have been discarded")
 
     }  else setMessage("No changes to discard")
@@ -93,6 +91,7 @@ const TodoApp = () => {
           </Button>
         </form>
         <TodoList todos={todos} setTodos={setTodos} />
+       
         <Snackbar
           open={message.length > 0}
           onClose={handleClose}
