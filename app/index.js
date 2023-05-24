@@ -1,21 +1,72 @@
 "use client";
 import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { supabaseClient } from "./client";
 import { TextField, Button, ThemeProvider, Snackbar } from "@mui/material";
 import { createTheme } from "@mui/material/styles";
 import "./globals.css";
 import TodoList from "./components/TodoList";
+import SignIn from "./components/SignIn";
 import { useEffect } from "react";
 
 const TodoApp = () => {
   const [todos, setTodos] = useState([]);
   const [input, setInput] = useState("");
-  const [snack, setSnack] = useState("");
   const [message, setMessage] = useState('')
+
+  const router = useRouter();
+  const user = supabaseClient.auth.getUser()
+  console.log(user)
+
+  useEffect(() => {
+    const { data: authListener } = supabaseClient.auth.onAuthStateChange(
+      (event, session) => {
+        handleAuthSession(event, session);
+        if (event === "SIGNED_IN") {
+          const signedInUser = supabaseClient.auth.user();
+          const userId = signedInUser.id;
+          supabaseClient
+            .from("profiles")
+            .upsert({ id: userId })
+            .then((_data, error) => {
+              if (!error) {
+                router.push("/");
+              }
+            });
+        }
+        if (event === "SIGNED_OUT") {
+          router.push("/signin");
+        }
+      }
+    );
+
+    return () => {
+      authListener.unsubscribe();
+    };
+  }, [router]);
+
+  useEffect(() => {
+    if (user) {
+      if (router.pathname === "/signin") {
+        router.push("/");
+      }
+    }
+  }, [router.pathname, user, router]);
+
+  const handleAuthSession = async (event, session) => {
+    await fetch("/api/auth", {
+      method: "POST",
+      headers: new Headers({ "Content-Type": "application/json" }),
+      credentials: "same-origin",
+      body: JSON.stringify({ event, session }),
+    });
+  };
+
 
   const addTodo = (e) => {
     e.preventDefault();
     if (!input) return;
-    setTodos([...todos, { id: Date.now(), text: input, done: false }]);
+    setTodos([...todos, { id: Date.now(), content: input, done: false }]);
     setInput("");
   };
 
@@ -25,7 +76,7 @@ const TodoApp = () => {
     if (todos && JSON.stringify(list) !== JSON.stringify(todos)) {
       console.log(list, todos);
       localStorage.setItem("todos", JSON.stringify(todos));
-      setSnack("saved");
+     
       setMessage("Changes have been saved")
     } else setMessage("No changes to save")
   };
@@ -33,7 +84,7 @@ const TodoApp = () => {
     const list = JSON.parse(localStorage.getItem("todos"));
     if (list) {
       localStorage.removeItem("todos");
-      setSnack("deleted");
+  
       setMessage("Changes have been discarded")
 
     }  else setMessage("No changes to discard")
@@ -93,6 +144,7 @@ const TodoApp = () => {
           </Button>
         </form>
         <TodoList todos={todos} setTodos={setTodos} />
+        <SignIn/>
         <Snackbar
           open={message.length > 0}
           onClose={handleClose}
