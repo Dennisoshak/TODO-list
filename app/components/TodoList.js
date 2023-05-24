@@ -1,9 +1,8 @@
-import { useState,useRef  } from "react";
-import { TextField,Button } from "@mui/material";
-import '../globals.css'
+import { useState, useRef } from "react";
+import { TextField, Button } from "@mui/material";
+import "../globals.css";
 
-
-const TodoList = ({todos, setTodos}) => {
+const TodoList = ({ todos, setTodos }) => {
   const [onEdit, setOnEdit] = useState(0);
   const [edited, setEdited] = useState("");
 
@@ -29,7 +28,7 @@ const TodoList = ({todos, setTodos}) => {
     dragOverItem.current = null;
     setTodos(copyListItems);
   };
-  
+
   const deleteTodo = (id) => {
     setTodos(todos.filter((todo) => todo.id !== id));
   };
@@ -46,31 +45,26 @@ const TodoList = ({todos, setTodos}) => {
     temp[i].text = edited;
     setTodos(temp);
     setOnEdit(0);
-    setEdited("")
+    setEdited("");
   };
 
-console.log(edited)
+  console.log(edited);
 
   return (
     <ul>
       {todos.map((todo, i) => (
         <li
-        onDragStart={(e) => dragStart(e, i)}
-        
-        onDragEnter={(e) => dragEnter(e, i)}
-        onDragEnd={(e)=>dropItem(e)}
-        
-
+          onDragStart={(e) => dragStart(e, i)}
+          onDragEnter={(e) => dragEnter(e, i)}
+          onDragEnd={(e) => dropItem(e)}
           key={todo.id}
           draggable
-          className={`todo-item ${todo.done ? "done" : ""}`}
-        >
+          className={`todo-item ${todo.done ? "done" : ""}`}>
           {todo.id === onEdit ? (
             <form
               className="edit-form"
               onSubmit={(e) => editTodo(e, i)}
-              style={{ width: "100%" }}
-            >
+              style={{ width: "100%" }}>
               <TextField
                 fullWidth
                 id="fullwidth"
@@ -90,13 +84,14 @@ console.log(edited)
             </form>
           ) : (
             <div className="edit-form">
-              <span className="todo-text"onClick={() => markTodo(todo.id)}>{todo.text}</span>
+              <span className="todo-text" onClick={() => markTodo(todo.id)}>
+                {todo.text}
+              </span>
               <div>
                 <button
                   className="edit"
                   disabled={todo.done}
-                  onClick={() => setOnEdit(todo.id)}
-                >
+                  onClick={() => setOnEdit(todo.id)}>
                   Edit
                 </button>
                 <button className="delete" onClick={() => deleteTodo(todo.id)}>

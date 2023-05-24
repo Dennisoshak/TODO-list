@@ -20,12 +20,14 @@ a {
 }
 
 header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
 
-
+ul {
+  padding-inline-end: 40px;
+}
 
 .todo-item {
   display: flex;
@@ -36,16 +38,15 @@ header {
   margin-bottom: 0.5rem;
   border-radius: 5px;
   transition: 0.15s ease-in-out;
-
 }
 
 .todo-item:hover {
-    transform: scale(1.05);
-
+  transform: scale(1.03);
 }
 
 .todo-text {
-    cursor: pointer;
+  cursor: pointer;
+  width: 80%;
 }
 
 .todo-item.done {
@@ -55,11 +56,11 @@ header {
 }
 
 .edit-form {
-    width: 100%;
-    display: flex;
-    justify-content: space-between;
-    height: 40px;
-    align-items: center;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  height: 40px;
+  align-items: center;
 }
 
 button {
@@ -73,5 +74,5 @@ button.delete {
   margin-left: 1rem;
 }
 button.done {
-    margin-left: 20%;
+  margin-left: 20%;
 }
