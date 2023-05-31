@@ -1,3 +1,6 @@
+
+@import url("https://fonts.googleapis.com/css2?family=Markazi+Text:wght@450");
+
 html,
 body {
   padding: 0;
@@ -25,7 +28,10 @@ header {
     justify-content: space-between;
 }
 
-
+h1 {
+  font-family: 'Markazi Text';
+font-size: 3rem;
+}
 
 .todo-item {
   display: flex;

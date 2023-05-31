@@ -49,7 +49,6 @@ const TodoList = ({todos, setTodos}) => {
     setEdited("")
   };
 
-console.log(edited)
 
   return (
     <ul>
